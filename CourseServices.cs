@@ -83,6 +83,18 @@ namespace cs330_proj1
         /* As a student I want to find a course that meets two different core goals, so that I can
         "feed two birds with one seed" (save time by taking one class that will fulfill two 
           requirements */
+         public List<Course> getCoursesByGoalIds(String goalId1, String goalId2) {
+            List<Course> coursesForGoal1 = getCoursesByGoalId(goalId1);
+            List<Course> coursesForGoal2 = getCoursesByGoalId(goalId2);
+
+            List<Course> result = new List<Course>();
+            foreach(Course c in coursesForGoal1) {
+                if(coursesForGoal2.Contains(c)) {
+                    result.Add(c);
+                }
+            }
+            return result;
+        }
 
         /* As a freshman adviser, I want to see all the core goals which do not have any course offerings 
            for a given semester, so that I can work with departments to get some courses offered
