@@ -40,13 +40,13 @@ namespace cs330courses
             }
             Console.WriteLine("---------");
 
-            /*
+            
             List<Course> theList5 = service.getCoursesByGoalId("CG2");
             foreach(Course c in theList5) {
                 Console.WriteLine(c);
             }
             Console.WriteLine("---------");
-
+            /*
             List<Course> theList6 = service.getCoursesByGoalIds("CG2","CG1");
             foreach(Course c in theList6) {
                 Console.WriteLine(c);

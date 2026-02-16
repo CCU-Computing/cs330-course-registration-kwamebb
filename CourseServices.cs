@@ -68,8 +68,17 @@ namespace cs330_proj1
             }
             return result;
          }
+
         /* As a student I want to see all courses that meet a core goal, so that I can plan out
            my courses over the next few semesters and choose core courses that make sense for me */
+         public List<Course> getCoursesByGoalId(String theGoalId) {
+            foreach(CoreGoal cg in repo.Goals) {
+                if(cg.Id.Equals(theGoalId)) {
+                    return cg.Courses;
+                }
+            }
+            throw new Exception("Didn't find the goal");
+        }
 
         /* As a student I want to find a course that meets two different core goals, so that I can
         "feed two birds with one seed" (save time by taking one class that will fulfill two 
