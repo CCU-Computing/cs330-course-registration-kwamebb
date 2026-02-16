@@ -100,6 +100,28 @@ namespace cs330_proj1
            for a given semester, so that I can work with departments to get some courses offered
            that students can take to meet those goals */
 
+           public List<CoreGoal> getCoreGoalsThatAreNotCoveredBySemester(String semester) {
+            List<CourseOffering> semesterOfferings = getCourseOfferingsBySemester(semester);
+
+            List<CoreGoal> result = new List<CoreGoal>();
+            foreach(CoreGoal cg in repo.Goals) {
+                bool isCovered = false;
+                foreach(Course c in cg.Courses) {
+                    foreach(CourseOffering co in semesterOfferings) {
+                        if(co.TheCourse == c) {
+                            isCovered = true;
+                            break;
+                        }
+                    }
+                    if(isCovered) break;
+                }
+                if(!isCovered) {
+                    result.Add(cg);
+                }
+            }
+            return result;
+        }
+
         
      }
 }

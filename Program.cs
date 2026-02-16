@@ -52,14 +52,14 @@ namespace cs330courses
                 Console.WriteLine(c);
             }
             Console.WriteLine("---------");
+
             
-            /*
             List<CoreGoal> theList7 = service.getCoreGoalsThatAreNotCoveredBySemester("Fall 2020");
             foreach(CoreGoal c in theList7) {
                 Console.WriteLine(c);
             }
             Console.WriteLine("---------");
-           */
+           
 
 
             
