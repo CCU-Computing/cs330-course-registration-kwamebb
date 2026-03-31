@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace cs330_proj1
 {
-    public class CourseServices
+    public class CourseServices : ICourseServices
     {
         private CourseRepository repo = new CourseRepository();
 
@@ -42,6 +42,106 @@ namespace cs330_proj1
         /* As a student, I want to see all available courses so that I know what my options are */
          public List<Course> getCourses() {
             return repo.Courses;
+        }
+
+        // Get a single course by its name (e.g., "ARTD 105")
+         public Course getCourseByName(String courseName) {
+            foreach(Course c in repo.Courses) {
+                if(c.Name.Equals(courseName, StringComparison.OrdinalIgnoreCase)) {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        // Search for courses by department prefix (e.g., "ARTS")
+         public List<Course> getCoursesByDept(String dept) {
+            List<Course> result = new List<Course>();
+            foreach(Course c in repo.Courses) {
+                if(c.Name.StartsWith(dept, StringComparison.OrdinalIgnoreCase)) {
+                    result.Add(c);
+                }
+            }
+            return result;
+        }
+
+        // Add a new course; returns null if the course already exists
+         public Course addCourse(Course newCourse) {
+            if(newCourse == null || String.IsNullOrWhiteSpace(newCourse.Name)) {
+                return null;
+            }
+            if(getCourseByName(newCourse.Name) != null) {
+                return null;
+            }
+            repo.Courses.Add(newCourse);
+            return newCourse;
+        }
+
+        // Update an existing course; returns null if not found
+         public Course updateCourse(String courseName, Course updatedCourse) {
+            Course existing = getCourseByName(courseName);
+            if(existing == null || updatedCourse == null) {
+                return null;
+            }
+            existing.Title = updatedCourse.Title;
+            existing.Credits = updatedCourse.Credits;
+            existing.Description = updatedCourse.Description;
+            return existing;
+        }
+
+        // Delete an existing course; returns false if not found
+         public bool deleteCourse(String courseName) {
+            Course existing = getCourseByName(courseName);
+            if(existing == null) {
+                return false;
+            }
+            repo.Courses.Remove(existing);
+
+            // Remove course from any core goals that reference it
+            foreach(CoreGoal cg in repo.Goals) {
+                if(cg.Courses.Contains(existing)) {
+                    cg.Courses.Remove(existing);
+                }
+            }
+
+            // Remove course offerings for the deleted course
+            for(int i = repo.Offerings.Count - 1; i >= 0; i--) {
+                if(repo.Offerings[i].TheCourse == existing) {
+                    repo.Offerings.RemoveAt(i);
+                }
+            }
+            return true;
+        }
+
+        // Get core goals that include a particular course
+         public List<CoreGoal> getCoreGoalsByCourseName(String courseName) {
+            Course course = getCourseByName(courseName);
+            if(course == null) {
+                return null;
+            }
+            List<CoreGoal> result = new List<CoreGoal>();
+            foreach(CoreGoal cg in repo.Goals) {
+                if(cg.Courses.Contains(course)) {
+                    result.Add(cg);
+                }
+            }
+            return result;
+        }
+
+        // Get course offerings for a specific course and semester
+         public List<CourseOffering> getCourseOfferingsByCourseAndSemester(String courseName, String semester) {
+            Course course = getCourseByName(courseName);
+            if(course == null) {
+                return null;
+            }
+            List<CourseOffering> result = new List<CourseOffering>();
+            foreach(CourseOffering co in repo.Offerings) {
+                if(co.TheCourse == course 
+                    && co.Semester.Equals(semester, StringComparison.OrdinalIgnoreCase)) {
+                    result.Add(co);
+                }
+            }
+            return result;
         }
 
         /* As a student, I want to see all course offerings by semester, so that I can choose from what's

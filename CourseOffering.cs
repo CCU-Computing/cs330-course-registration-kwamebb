@@ -10,7 +10,7 @@ namespace cs330_proj1
    // public string Instructor {get;set;}
 
         public override String ToString() {
-            return $"{TheCourse} Section {Section} offered ({Semester})n";
+            return $"{TheCourse.ToString().TrimEnd()}\nSection {Section} offered ({Semester})";
 
         }
         public int CompareTo(CourseOffering other) {
