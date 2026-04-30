@@ -101,5 +101,45 @@ namespace CourseRegistrationTests
             }
             Assert.True(found);
         }
+
+        // ---------------------------------------------------------------
+        // User Story 4: As a student, I want to see all course offerings
+        // by semester and department so that I can choose major courses.
+        // ---------------------------------------------------------------
+
+        [Fact]
+        public void GetCourseOfferingsBySemesterAndDept_Fall2020_CSCI_ReturnsOne()
+        {
+            List<CourseOffering> offerings = services.getCourseOfferingsBySemesterAndDept("Fall 2020", "CSCI");
+            Assert.Equal(1, offerings.Count);
+        }
+
+        [Fact]
+        public void GetCourseOfferingsBySemesterAndDept_Fall2020_CSCI_ContainsCSCI201()
+        {
+            List<CourseOffering> offerings = services.getCourseOfferingsBySemesterAndDept("Fall 2020", "CSCI");
+            Assert.Equal("CSCI 201", offerings[0].TheCourse.Name);
+        }
+
+        [Fact]
+        public void GetCourseOfferingsBySemesterAndDept_Spring2021_ARTS_ReturnsEmpty()
+        {
+            List<CourseOffering> offerings = services.getCourseOfferingsBySemesterAndDept("Spring 2021", "ARTS");
+            Assert.Empty(offerings);
+        }
+
+        [Fact]
+        public void GetCourseOfferingsBySemesterAndDept_Fall2020_ENGL_ReturnsOne()
+        {
+            List<CourseOffering> offerings = services.getCourseOfferingsBySemesterAndDept("Fall 2020", "ENGL");
+            Assert.Equal(1, offerings.Count);
+        }
+
+        [Fact]
+        public void GetCourseOfferingsBySemesterAndDept_Spring2022_ARTS_ReturnsOne()
+        {
+            List<CourseOffering> offerings = services.getCourseOfferingsBySemesterAndDept("Spring 2022", "ARTS");
+            Assert.Equal(1, offerings.Count);
+        }
     }
 }
